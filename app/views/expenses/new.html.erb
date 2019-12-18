@@ -1,0 +1,25 @@
+<%= form_for :expense, url: expenses_path,
+             :html => {:class => 'card card-body bg-light py-5 mt-4 col-md-6 mx-auto'} do |f| %>
+
+  <h2 class="text-center d-block">Add new expense</h2>
+  <% if @expense.errors.any? %>
+    <% @expense.errors.full_messages.each do |msg| %>
+      <div class="alert alert-danger"><%= msg %></div>
+    <% end %>
+  <% end %>
+  <div class="form-group">
+    <%= f.label :title %> <br>
+    <%= f.text_field :title, class: 'form-control' %> <br>
+  </div>
+  <div class="form-group">
+    <%= f.label :amount %>
+    <%= f.number_field :amount, class: 'form-control' %>
+  </div>
+  <div class="form-group">
+    <%= f.label :body %>
+    <%= f.text_area :body, class: 'form-control' %>
+  </div>
+  <div class="form-group">
+    <%= f.submit class: 'btn btn-primary d-block mx-auto' %>
+  </div>
+<% end %>

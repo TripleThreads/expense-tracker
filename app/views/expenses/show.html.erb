@@ -1,0 +1,64 @@
+<div class="card card-body my-5 col-md-5 mx-auto">
+  <h4 class="card-title"><%= @expense.title %></h4>
+  <h5>Amount: <%= @expense.amount %></h5>
+  <p class="card-text">Description: <%= @expense.body %></p>
+  <div class="row ml-1">
+    <%= link_to "Edit", edit_expense_path(@expense), :class => 'btn btn-info col-md-3 mr-5' %>
+    <button class="btn btn-danger example" onclick="fire(<%= @expense.id %>)">Delete</button>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script>
+    const swalWithBootstrapButtons = Swal.mixin({
+        customClass: {
+            confirmButton: 'btn btn-success',
+            cancelButton: 'btn btn-danger'
+        },
+        buttonsStyling: true
+    });
+
+    function fire(id) {
+        console.log(id);
+        swalWithBootstrapButtons.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, delete it!',
+            cancelButtonText: 'No, cancel!',
+            reverseButtons: true
+        }).then((result) => {
+            if (result.value) {
+                $.ajax({
+                    type: "DELETE",
+                    url: "/expenses/" + id,
+                    data: {authenticity_token: $('[name="csrf-token"]')[0].content},
+                    success: function (res) {
+                        location.href = '/'
+                    },
+                    error: function (error) {
+                        console.log(error)
+                    }
+                });
+                swalWithBootstrapButtons.fire(
+                    'Deleted!',
+                    'Your file has been deleted.',
+                    'success'
+                );
+
+            } else if (
+                /* Read more about handling dismissals below */
+                result.dismiss === Swal.DismissReason.cancel
+            ) {
+                swalWithBootstrapButtons.fire(
+                    'Cancelled',
+                    'Your imaginary file is safe :)',
+                    'error'
+                )
+            }
+
+        })
+    }
+</script>

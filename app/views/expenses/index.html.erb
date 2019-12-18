@@ -1,0 +1,12 @@
+<h1 class="text-center h2 my-4">List of expenses</h1>
+
+<div class="row">
+
+  <% @expenses.each do |expense| %>
+    <div class="card card-body my-2 col-md-3 mx-3">
+      <h4 class="card-title"><%= expense.title %></h4>
+      <p>Amount: <%= expense.amount %> ETB</p>
+      <%= link_to "Read more", expense_path(expense), :class => 'btn btn-secondary' %>
+    </div>
+  <% end %>
+</div>
